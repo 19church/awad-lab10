@@ -35,19 +35,17 @@ const compareHash = async(plainText, hashText) => {
     });
 }
 
-const findUser = async(username) => {
+const findUser = (username) => {
     return new Promise((resolve, reject) => {
-        User.findOne({username: username}, (err, data) => {
-            if (err) {
-                reject(new Error('Cannot find username!'));
+        User.findOne({username: username}).then(data => {
+            if (data) {
+                resolve({id: data._id, username: data.username, password: data.password});
             } else {
-                if (data) {
-                    resolve({id: data._id, username: data.username, password: data.password});
-                } else {
-                    reject(new Error('Cannot find username!'));
-                }
+                reject(new Error('Cannot find username!'));
             }
-        });
+        }).catch( err => {
+            reject(new Error('Cannot find username!'));
+        })
     });
 }
 

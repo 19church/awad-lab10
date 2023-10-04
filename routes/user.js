@@ -29,13 +29,11 @@ const insertUser = (dataUser) => {
             username: dataUser.username,
             password: dataUser.password
         });
-        new_user.save((err, data) => {
-            if(err) {
-                reject(new Error('Cannot insert user to DB!'));
-            } else {
-                resolve({message: 'Signin up successfully'});
-            }
-        });
+        new_user.save().then( result => {
+            resolve({message: 'Signin up successfully'});
+        }).catch(err => {
+            reject(new Error('Cannot insert user to DB!'));
+        })
     });
 }
 router.route('/signup')
@@ -47,16 +45,16 @@ router.route('/signup')
                     password: hashText,
                 }
                 console.log(playload);
-                //insertUser(playload)
-                let new_user = new User({
-                    username: playload.username,
-                    password: playload.password
-                });
-                new_user.save()
+                insertUser(playload)
+                // let new_user = new User({
+                //     username: playload.username,
+                //     password: playload.password
+                // });
+                // new_user.save()
                     .then(result => {
                         console.log(result);
-                        res.status(200).json({message: 'Signin up successfully'});
-                        //res.status(200).json(result);
+                        //res.status(200).json({message: 'Signin up successfully'});
+                        res.status(200).json(result);
                     })
                     .catch(err => {
                         console.log(err);
