@@ -46,14 +46,8 @@ router.route('/signup')
                 }
                 console.log(playload);
                 insertUser(playload)
-                // let new_user = new User({
-                //     username: playload.username,
-                //     password: playload.password
-                // });
-                // new_user.save()
                     .then(result => {
                         console.log(result);
-                        //res.status(200).json({message: 'Signin up successfully'});
                         res.status(200).json(result);
                     })
                     .catch(err => {
